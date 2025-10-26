@@ -2,8 +2,8 @@
 
 {
   # Home Manager needs a bit of information about you and the paths it should manage
-  home.username = "youruser";
-  home.homeDirectory = "/home/youruser";
+  home.username = "unaware";
+  home.homeDirectory = "/home/unaware";
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. Don't change this!
