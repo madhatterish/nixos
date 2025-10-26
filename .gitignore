@@ -1,7 +1,3 @@
-# Hardware configuration files (machine-specific, should not be shared)
-hardware-configuration.nix
-**/hardware-configuration.nix
-
 # Nix build results
 result
 result-*
