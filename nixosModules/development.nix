@@ -21,11 +21,10 @@
 
     # Containers and virtualization
     docker-compose
-    docker-desktop
 
     # Text editors and IDEs
     vscode
-    lens
+    openlens  # Kubernetes IDE (formerly Lens)
     beekeeper-studio
 
     # Database tools
