@@ -41,7 +41,7 @@
     kitty
 
     # File manager
-    thunar
+    yazi
 
     # Application launcher
     rofi

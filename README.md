@@ -143,7 +143,7 @@ Default keybindings (SUPER = Windows key):
 - `SUPER + Q` - Open terminal (Kitty)
 - `SUPER + C` - Close active window
 - `SUPER + M` - Exit Hyprland
-- `SUPER + E` - Open file manager (Thunar)
+- `SUPER + E` - Open file manager (Yazi)
 - `SUPER + V` - Toggle floating window
 - `SUPER + R` - Open application launcher (Rofi)
 - `SUPER + L` - Lock screen
