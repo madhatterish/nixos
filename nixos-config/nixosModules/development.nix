@@ -21,9 +21,12 @@
 
     # Containers and virtualization
     docker-compose
+    docker-desktop
 
     # Text editors and IDEs
     vscode
+    lens
+    beekeeper-studio
 
     # Database tools
     postgresql
@@ -38,6 +41,8 @@
     kubectl
     terraform
     awscli2
+    doctl
+    argocd
   ];
 
   # Docker

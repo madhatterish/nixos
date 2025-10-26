@@ -9,6 +9,7 @@
     ../../nixosModules/common.nix
     ../../nixosModules/desktop.nix
     ../../nixosModules/gaming.nix
+    ../../nixosModules/development.nix
   ];
 
   # Hostname
@@ -17,7 +18,7 @@
   # Users
   users.users.youruser = {
     isNormalUser = true;
-    description = "Your Name";
+    description = "unaware";
     extraGroups = [ "networkmanager" "wheel" "docker" ];
     initialPassword = "changeme";
   };

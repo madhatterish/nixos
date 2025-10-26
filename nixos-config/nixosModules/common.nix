@@ -74,7 +74,7 @@
 
   # Auto upgrade
   system.autoUpgrade = {
-    enable = false; # Set to true if you want automatic updates
+    enable = true; # Set to true if you want automatic updates
     allowReboot = false;
   };
 

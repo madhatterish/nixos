@@ -23,7 +23,7 @@
   # Users
   users.users.youruser = {
     isNormalUser = true;
-    description = "Your Name";
+    description = "sgasparis";
     extraGroups = [ "networkmanager" "wheel" "docker" ];
     initialPassword = "changeme";
   };
