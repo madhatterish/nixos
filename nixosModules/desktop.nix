@@ -44,7 +44,7 @@
     thunar
 
     # Application launcher
-    rofi-wayland
+    rofi
 
     # Notifications
     dunst
