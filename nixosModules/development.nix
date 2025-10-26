@@ -24,7 +24,7 @@
 
     # Text editors and IDEs
     vscode
-    openlens  # Kubernetes IDE (formerly Lens)
+    lens
     beekeeper-studio
 
     # Database tools
