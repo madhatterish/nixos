@@ -28,8 +28,6 @@
   # Enable 32-bit libraries for gaming
   hardware.opengl = {
     enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
   };
 
   # Enable Xbox controller support
