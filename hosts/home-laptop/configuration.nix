@@ -16,7 +16,7 @@
   networking.hostName = "home-laptop";
 
   # Users
-  users.users.youruser = {
+  users.users.unaware = {
     isNormalUser = true;
     description = "unaware";
     extraGroups = [ "networkmanager" "wheel" "docker" ];
