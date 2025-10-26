@@ -25,7 +25,6 @@
     # Text editors and IDEs
     vscode
     lens
-    beekeeper-studio
 
     # Database tools
     postgresql
