@@ -25,8 +25,7 @@
     dbeaver-bin
 
     # Browser
-    firefox
-    google-chrome
+    brave
   ];
 
   # Git configuration
