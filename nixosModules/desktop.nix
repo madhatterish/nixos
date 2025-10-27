@@ -16,16 +16,14 @@
   # Enable polkit for authentication
   security.polkit.enable = true;
 
-  # Display manager
-  services.greetd = {
+  # Display manager - SDDM with graphical login
+  services.displayManager.sddm = {
     enable = true;
-    settings = {
-      default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
-        user = "greeter";
-      };
-    };
+    wayland.enable = true;
   };
+
+  # Set Hyprland as default session
+  services.displayManager.defaultSession = "hyprland";
 
   # Essential desktop packages
   environment.systemPackages = with pkgs; [
@@ -66,7 +64,25 @@
 
     # Audio control
     pavucontrol
+
+    # Waybar system tray dependencies
+    libdbusmenu-gtk3
   ];
+
+  # Sound with PipeWire (PulseAudio compatibility for Waybar)
+  sound.enable = true;
+  hardware.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    jack.enable = true;
+  };
+
+  # Network management (required for Waybar network module)
+  networking.networkmanager.enable = true;
 
   # Bluetooth
   hardware.bluetooth.enable = true;
