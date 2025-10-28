@@ -71,6 +71,9 @@
     # Credential management
     gnome-keyring
     seahorse  # GUI for managing passwords/credentials
+
+    # Backlight control
+    brightnessctl
   ];
 
   # Sound with PipeWire (PulseAudio compatibility for Waybar)
@@ -97,6 +100,20 @@
   # GNOME Keyring for credential management (WiFi passwords, etc.)
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.sddm.enableGnomeKeyring = true;
+
+  # Backlight control permissions
+  programs.light.enable = true;
+
+  # Set default backlight brightness on boot
+  systemd.services.backlight-default = {
+    description = "Set default backlight brightness";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "systemd-backlight@.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.brightnessctl}/bin/brightnessctl set 100%";
+    };
+  };
 
   # Fonts
   fonts.packages = with pkgs; [

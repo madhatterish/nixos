@@ -6,7 +6,7 @@
 
     "modules-left": ["hyprland/workspaces", "hyprland/window"],
     "modules-center": ["clock"],
-    "modules-right": ["pulseaudio", "network", "cpu", "memory", "battery", "tray"],
+    "modules-right": ["pulseaudio", "backlight", "network", "cpu", "memory", "battery", "tray"],
 
     "hyprland/workspaces": {
         "disable-scroll": true,
@@ -89,6 +89,14 @@
             "default": ["", "", ""]
         },
         "on-click": "pavucontrol"
+    },
+
+    "backlight": {
+        "device": "intel_backlight",
+        "format": "{percent}% {icon}",
+        "format-icons": ["", "", "", "", "", "", "", "", ""],
+        "on-scroll-up": "brightnessctl set 5%+",
+        "on-scroll-down": "brightnessctl set 5%-"
     },
 
     "tray": {
