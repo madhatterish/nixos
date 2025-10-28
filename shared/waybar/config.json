@@ -6,7 +6,7 @@
 
     "modules-left": ["hyprland/workspaces", "hyprland/window"],
     "modules-center": ["clock"],
-    "modules-right": ["pulseaudio", "backlight", "network", "cpu", "memory", "battery", "tray"],
+    "modules-right": ["pulseaudio", "backlight", "backlight#kbd", "network", "cpu", "memory", "battery", "tray"],
 
     "hyprland/workspaces": {
         "disable-scroll": true,
@@ -96,7 +96,17 @@
         "format": "{percent}% {icon}",
         "format-icons": ["", "", "", "", "", "", "", "", ""],
         "on-scroll-up": "brightnessctl set 5%+",
-        "on-scroll-down": "brightnessctl set 5%-"
+        "on-scroll-down": "brightnessctl set 5%-",
+        "tooltip": false
+    },
+
+    "backlight#kbd": {
+        "device": "kbd_backlight",
+        "format": "{icon} {percent}%",
+        "format-icons": ["", ""],
+        "on-scroll-up": "brightnessctl --device='*kbd_backlight' set 33%+",
+        "on-scroll-down": "brightnessctl --device='*kbd_backlight' set 33%-",
+        "tooltip-format": "Keyboard backlight: {percent}%"
     },
 
     "tray": {

@@ -104,14 +104,25 @@
   # Backlight control permissions
   programs.light.enable = true;
 
-  # Set default backlight brightness on boot
+  # Set default screen backlight brightness on boot
   systemd.services.backlight-default = {
-    description = "Set default backlight brightness";
+    description = "Set default screen backlight brightness";
     wantedBy = [ "multi-user.target" ];
     after = [ "systemd-backlight@.service" ];
     serviceConfig = {
       Type = "oneshot";
       ExecStart = "${pkgs.brightnessctl}/bin/brightnessctl set 100%";
+    };
+  };
+
+  # Set default keyboard backlight on boot (always on)
+  systemd.services.kbd-backlight-default = {
+    description = "Set default keyboard backlight";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "systemd-backlight@.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.brightnessctl}/bin/brightnessctl --device='*kbd_backlight' set 100%";
     };
   };
 
