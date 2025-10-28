@@ -67,6 +67,10 @@
 
     # Waybar system tray dependencies
     libdbusmenu-gtk3
+
+    # Credential management
+    gnome-keyring
+    seahorse  # GUI for managing passwords/credentials
   ];
 
   # Sound with PipeWire (PulseAudio compatibility for Waybar)
@@ -89,6 +93,10 @@
 
   # Enable dconf (required for some GTK apps)
   programs.dconf.enable = true;
+
+  # GNOME Keyring for credential management (WiFi passwords, etc.)
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.sddm.enableGnomeKeyring = true;
 
   # Fonts
   fonts.packages = with pkgs; [
