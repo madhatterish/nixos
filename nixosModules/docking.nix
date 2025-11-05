@@ -9,10 +9,8 @@
   nixpkgs.config.allowUnfree = true;
 
   # Kernel modules for USB display adapters
-  boot.kernelModules = [
-    "udl"            # USB DisplayLink
-    "evdi"           # EVDI module for DisplayLink
-  ];
+  # udl is in mainline kernel, evdi needs to be built from extraModulePackages
+  boot.kernelModules = [ "udl" ];
 
   # Additional kernel parameters for better USB and display support
   boot.kernelParams = [
@@ -20,6 +18,7 @@
   ];
 
   # Extra kernel modules for USB display devices (EVDI for DisplayLink)
+  # EVDI is not in mainline kernel, must be built as external module
   boot.extraModulePackages = with config.boot.kernelPackages; [
     evdi  # Essential Video Device Linked Interface for DisplayLink
   ];
