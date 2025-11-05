@@ -5,9 +5,13 @@
   # Many USB docks (Dell, HP, Lenovo, Plugable, etc.) use DisplayLink chipsets
   # Note: DisplayLink is only needed for USB-based docks, not Thunderbolt/USB-C with DP Alt Mode
 
+  # Allow unfree packages for DisplayLink
+  nixpkgs.config.allowUnfree = true;
+
   # Kernel modules for USB display adapters
   boot.kernelModules = [
     "udl"            # USB DisplayLink
+    "evdi"           # EVDI module for DisplayLink
   ];
 
   # Additional kernel parameters for better USB and display support
@@ -44,9 +48,6 @@
     wlr-randr        # Wayland display configuration (already in desktop.nix but important)
     wdisplays        # GUI for configuring displays on Wayland
 
-    # DisplayLink driver for DL-7xxx, DL-6xxx, DL-5xxx, DL-41xx, DL-3xxx series
-    displaylink
-
     # USB utilities for debugging
     usbutils         # lsusb command
     pciutils         # lspci command
@@ -55,12 +56,24 @@
     edid-decode      # Decode EDID data from monitors
     read-edid        # Read EDID data
 
+    # DRM utilities for display debugging
+    libdrm
+
     # Create a wrapper package for the dock-displays script
     (pkgs.writeScriptBin "dock-displays" ''
       #!${pkgs.bash}/bin/bash
       exec ${pkgs.bash}/bin/bash ~/nixos-config/shared/scripts/dock-displays.sh "$@"
     '')
   ];
+
+  # Services for DisplayLink - using systemd to manage the connection
+  systemd.services.displaylink-reload = {
+    description = "Reload DisplayLink devices";
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.kmod}/bin/modprobe -r evdi && ${pkgs.kmod}/bin/modprobe evdi";
+    };
+  };
 
   # Hardware acceleration support
   hardware.graphics = {
