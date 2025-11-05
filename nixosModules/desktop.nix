@@ -15,11 +15,68 @@
   # Enable polkit for authentication
   security.polkit.enable = true;
 
-  # Display manager - SDDM with graphical login
+  # Display manager - SDDM with graphical login and blurred background
   services.displayManager.sddm = {
     enable = true;
     wayland.enable = true;
+    theme = "breeze";
+    package = pkgs.kdePackages.sddm;
+
+    settings = {
+      General = {
+        # Use Wayland session
+        DisplayServer = "wayland";
+        # Set input method
+        InputMethod = "";
+      };
+
+      Theme = {
+        # Theme settings - breeze theme with customizations
+        Current = "breeze";
+        CursorTheme = "breeze_cursors";
+        CursorSize = 24;
+        # Enable blur
+        EnableHiDPI = true;
+      };
+
+      Users = {
+        # Hide system users
+        MaximumUid = 60000;
+        MinimumUid = 1000;
+        HideUsers = "";
+        HideShells = "/bin/false,/usr/bin/nologin";
+        # Show user avatars and remember settings
+        RememberLastUser = true;
+        RememberLastSession = true;
+        # User icon directory
+        DefaultAvatar = "";
+      };
+    };
   };
+
+  # SDDM theme configuration
+  environment.systemPackages = with pkgs; [
+    libsForQt5.qt5.qtgraphicaleffects  # Required for blur effects
+    libsForQt5.qt5.qtquickcontrols2     # Required for SDDM themes
+    libsForQt5.qt5.qtsvg                # SVG support for icons
+    kdePackages.breeze                   # Breeze theme with blur
+  ];
+
+  # Create custom SDDM theme configuration for blurred background
+  environment.etc."sddm.conf.d/theme.conf".text = ''
+    [Theme]
+    Current=breeze
+    CursorTheme=breeze_cursors
+    CursorSize=24
+
+    # Background image with blur
+    # You can set this to your wallpaper path
+    background=${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Next/contents/images/3840x2160.png
+    type=image
+
+    # Enable blur effect
+    blur=true
+  '';
 
   # Set Niri as default session
   services.displayManager.defaultSession = "niri";
@@ -53,7 +110,8 @@
     waybar
 
     # Screen lock
-    swaylock
+    swaylock-effects  # Enhanced swaylock with blur and effects
+    swayidle          # Idle management daemon
 
     # Network management GUI
     networkmanagerapplet
@@ -137,6 +195,27 @@
       ExecStart = "${pkgs.swaybg}/bin/swaybg -i ~/Pictures/Wallpapers/default.jpg -m fill";
       Restart = "on-failure";
       RestartSec = 1;
+    };
+  };
+
+  # Swayidle service for automatic screen locking
+  # Locks screen after 10 minutes of inactivity, turns off display after 15 minutes
+  systemd.user.services.swayidle = {
+    description = "Idle manager for Wayland";
+    wantedBy = [ "graphical-session.target" ];
+    partOf = [ "graphical-session.target" ];
+    path = [ pkgs.bash ];
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = ''
+        ${pkgs.swayidle}/bin/swayidle -w \
+          timeout 600 '${pkgs.swaylock-effects}/bin/swaylock -f -c 000000' \
+          timeout 900 'niri msg action power-off-monitors' \
+          resume 'niri msg action power-on-monitors' \
+          before-sleep '${pkgs.swaylock-effects}/bin/swaylock -f -c 000000'
+      '';
+      Restart = "on-failure";
+      RestartSec = 3;
     };
   };
 
