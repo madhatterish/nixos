@@ -50,10 +50,13 @@
   };
 
   # Niri configuration
-  programs.niri = {
-    enable = true;
-    config = builtins.readFile ../../shared/niri.kdl;
+  programs.niri.settings = {
+    # Import config from shared KDL file
+    # Note: Using settings instead of config to work with niri-flake homeModule
   };
+
+  # Link the KDL config file directly
+  xdg.configFile."niri/config.kdl".source = ../../shared/niri.kdl;
 
   # Waybar configuration
   # Machine-specific config with work-related shortcuts (Slack, Zoom)
