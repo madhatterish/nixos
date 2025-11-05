@@ -9,6 +9,7 @@
     ../../nixosModules/common.nix
     ../../nixosModules/desktop.nix
     ../../nixosModules/development.nix
+    ../../nixosModules/docking.nix
   ];
 
   # Hostname
