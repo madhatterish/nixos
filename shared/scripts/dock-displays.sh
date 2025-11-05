@@ -7,6 +7,10 @@ set -e
 
 echo "=== Dock Display Configuration Helper ==="
 echo ""
+echo "NOTE: Not all docks need DisplayLink!"
+echo "  - Thunderbolt/USB-C docks with DP Alt Mode: Native driver (no DisplayLink needed)"
+echo "  - USB-A docks or older USB-C docks: Usually need DisplayLink"
+echo ""
 
 # Function to list all connected displays
 list_displays() {
@@ -20,7 +24,16 @@ list_displays() {
 check_usb_dock() {
     echo "USB Display Adapters Detected:"
     echo "-------------------------------"
-    lsusb | grep -iE "display|dock|hub" || echo "No DisplayLink/dock devices found via USB"
+    # Check for DisplayLink devices (vendor ID 17e9)
+    if lsusb | grep -q "17e9"; then
+        echo "DisplayLink device found:"
+        lsusb | grep "17e9"
+    else
+        echo "No DisplayLink devices detected"
+    fi
+    echo ""
+    echo "USB Hubs (may indicate dock):"
+    lsusb | grep -iE "hub" | head -5 || echo "No major USB hubs detected"
     echo ""
 }
 
@@ -35,7 +48,23 @@ check_modules() {
 # Function to reload displaylink service
 reload_displaylink() {
     echo "Reloading DisplayLink service..."
-    sudo systemctl restart displaylink.service 2>/dev/null || echo "DisplayLink service not available"
+    if systemctl list-unit-files | grep -q "displaylink.service"; then
+        sudo systemctl restart displaylink.service 2>&1 && echo "DisplayLink service restarted successfully" || echo "Failed to restart DisplayLink service (may need password)"
+    else
+        echo "DisplayLink service not installed/configured"
+    fi
+    echo ""
+}
+
+# Function to check displaylink service status
+check_displaylink_status() {
+    echo "DisplayLink Service Status:"
+    echo "---------------------------"
+    if systemctl list-unit-files | grep -q "displaylink.service"; then
+        systemctl status displaylink.service --no-pager -l 2>&1 | head -10 || echo "Service exists but status check requires privileges"
+    else
+        echo "DisplayLink service not configured (this is normal if using native drivers)"
+    fi
     echo ""
 }
 
@@ -45,9 +74,10 @@ show_menu() {
     echo "1) List all connected displays"
     echo "2) Check USB dock detection"
     echo "3) Check DisplayLink kernel modules"
-    echo "4) Reload DisplayLink service"
-    echo "5) Show all information"
-    echo "6) Enable all displays"
+    echo "4) Check DisplayLink service status"
+    echo "5) Reload DisplayLink service"
+    echo "6) Show all information"
+    echo "7) Enable all displays"
     echo "q) Quit"
     echo ""
 }
@@ -65,6 +95,7 @@ show_all_info() {
     list_displays
     check_usb_dock
     check_modules
+    check_displaylink_status
 }
 
 # Main loop
@@ -82,9 +113,10 @@ while true; do
         1) list_displays ;;
         2) check_usb_dock ;;
         3) check_modules ;;
-        4) reload_displaylink ;;
-        5) show_all_info ;;
-        6) enable_all_displays ;;
+        4) check_displaylink_status ;;
+        5) reload_displaylink ;;
+        6) show_all_info ;;
+        7) enable_all_displays ;;
         q|Q) echo "Goodbye!"; exit 0 ;;
         *) echo "Invalid option" ;;
     esac
