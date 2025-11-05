@@ -1,16 +1,15 @@
 { config, pkgs, ... }:
 
 {
-  # Enable Hyprland
-  programs.hyprland = {
+  # Enable Niri
+  programs.niri = {
     enable = true;
-    xwayland.enable = true;
   };
 
   # XDG portal for screen sharing and other desktop integrations
   xdg.portal = {
     enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-gnome ];
   };
 
   # Enable polkit for authentication
@@ -22,8 +21,8 @@
     wayland.enable = true;
   };
 
-  # Set Hyprland as default session
-  services.displayManager.defaultSession = "hyprland";
+  # Set Niri as default session
+  services.displayManager.defaultSession = "niri";
 
   # Essential desktop packages
   environment.systemPackages = with pkgs; [
@@ -31,9 +30,8 @@
     wl-clipboard
     wlr-randr
 
-    # Screenshot and screen recording
-    grim
-    slurp
+    # Screenshot (Niri has built-in screenshot, but need wl-clipboard for clipboard support)
+    # No need for grim/slurp - Niri handles this natively
 
     # Terminal
     kitty
@@ -42,13 +40,13 @@
     yazi
 
     # Application launcher
-    rofi
+    fuzzel  # Niri works well with fuzzel (or you can use rofi)
 
     # Notifications
     dunst
 
     # Wallpaper
-    hyprpaper
+    swaybg  # Niri compatible wallpaper tool
 
     # Status bar
     waybar

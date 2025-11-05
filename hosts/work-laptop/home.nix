@@ -49,10 +49,10 @@
     };
   };
 
-  # Hyprland configuration
-  wayland.windowManager.hyprland = {
+  # Niri configuration
+  programs.niri = {
     enable = true;
-    extraConfig = builtins.readFile ../../shared/hyprland.conf;
+    config = builtins.readFile ../../shared/niri.kdl;
   };
 
   # Waybar configuration
@@ -79,11 +79,32 @@
     };
   };
 
-  # Rofi configuration
-  programs.rofi = {
+  # Fuzzel configuration (application launcher)
+  programs.fuzzel = {
     enable = true;
-    theme = "Arc-Dark";
+    settings = {
+      main = {
+        terminal = "kitty";
+        layer = "overlay";
+        font = "FiraCode Nerd Font:size=11";
+      };
+      colors = {
+        background = "1a1b26dd";
+        text = "c0caf5ff";
+        match = "7aa2f7ff";
+        selection = "283457ff";
+        selection-text = "c0caf5ff";
+        border = "33ccffff";
+      };
+      border = {
+        width = 2;
+        radius = 10;
+      };
+    };
   };
+
+  # Swaylock configuration
+  xdg.configFile."swaylock/config".source = ../../shared/swaylock.conf;
 
   # Let Home Manager install and manage itself
   programs.home-manager.enable = true;

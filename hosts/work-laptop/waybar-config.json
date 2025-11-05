@@ -4,30 +4,18 @@
     "height": 30,
     "spacing": 4,
 
-    "modules-left": ["hyprland/workspaces", "hyprland/window"],
+    "modules-left": ["niri/workspaces", "niri/window"],
     "modules-center": ["clock"],
     "modules-right": ["custom/slack", "custom/zoom", "pulseaudio", "network", "cpu", "memory", "battery", "tray"],
 
-    "hyprland/workspaces": {
-        "disable-scroll": true,
-        "all-outputs": true,
-        "format": "{name}: {icon}",
-        "format-icons": {
-            "1": "",
-            "2": "",
-            "3": "",
-            "4": "",
-            "5": "",
-            "urgent": "",
-            "focused": "",
-            "default": ""
-        }
+    "niri/workspaces": {
+        "format": "{name}",
+        "on-click": "activate"
     },
 
-    "hyprland/window": {
+    "niri/window": {
         "format": "{}",
-        "max-length": 50,
-        "separate-outputs": true
+        "max-length": 50
     },
 
     "clock": {
