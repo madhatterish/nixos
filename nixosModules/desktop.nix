@@ -101,8 +101,8 @@
     dunst
 
     # Wallpaper
-    swaybg  # Niri compatible wallpaper tool
-    azote   # GUI wallpaper manager for Wayland (works with swaybg)
+    swaybg    # Niri compatible wallpaper tool
+    waypaper  # GUI wallpaper manager for Wayland (works with swaybg)
 
     # Status bar
     waybar
@@ -183,7 +183,7 @@
 
   # Swaybg wallpaper service (user service)
   # Usage: Set wallpaper with: swaybg -i /path/to/wallpaper.jpg -m fill &
-  # Or use azote GUI to manage wallpapers
+  # Or use waypaper GUI to manage wallpapers
   systemd.user.services.swaybg = {
     description = "Wayland wallpaper daemon";
     wantedBy = [ "graphical-session.target" ];
