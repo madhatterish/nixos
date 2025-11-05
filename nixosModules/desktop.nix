@@ -76,7 +76,7 @@
 
     # Background image with blur
     # You can set this to your wallpaper path
-    background=${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Next/contents/images/3840x2160.png
+    background=/home/unaware/Pictures/Wallpapers/arc.png
     type=image
 
     # Enable blur effect
