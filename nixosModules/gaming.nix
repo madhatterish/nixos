@@ -26,7 +26,7 @@
   programs.gamemode.enable = true;
 
   # Enable 32-bit libraries for gaming
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
   };
 
