@@ -36,6 +36,10 @@
 
     # Allow users to access video devices
     KERNEL=="card[0-9]*", SUBSYSTEM=="drm", TAG+="uaccess"
+
+    # Disable USB autosuspend for USB hubs to prevent dock disconnection issues
+    ACTION=="add", SUBSYSTEM=="usb", ATTR{bDeviceClass}=="09", \
+      TEST=="power/control", ATTR{power/control}="on"
   '';
 
   # System packages for monitor management
@@ -71,13 +75,6 @@
       libvdpau-va-gl
     ];
   };
-
-  # USB autosuspend can cause issues with docks - disable for USB hubs
-  services.udev.extraRules = ''
-    # Disable USB autosuspend for USB hubs to prevent dock disconnection issues
-    ACTION=="add", SUBSYSTEM=="usb", ATTR{bDeviceClass}=="09", \
-      TEST=="power/control", ATTR{power/control}="on"
-  '';
 
   # Increase the number of file descriptors for better multi-monitor support
   security.pam.loginLimits = [

@@ -54,7 +54,7 @@
     tree
     unzip
     zip
-    file
+    filey
   ];
 
   # Enable the OpenSSH daemon
