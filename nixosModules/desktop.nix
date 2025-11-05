@@ -54,13 +54,8 @@
     };
   };
 
-  # SDDM theme configuration
-  environment.systemPackages = with pkgs; [
-    libsForQt5.qt5.qtgraphicaleffects  # Required for blur effects
-    libsForQt5.qt5.qtquickcontrols2     # Required for SDDM themes
-    libsForQt5.qt5.qtsvg                # SVG support for icons
-    kdePackages.breeze                   # Breeze theme with blur
-  ];
+  # Set Niri as default session
+  services.displayManager.defaultSession = "niri";
 
   # Create custom SDDM theme configuration for blurred background
   environment.etc."sddm.conf.d/theme.conf".text = ''
@@ -78,11 +73,14 @@
     blur=true
   '';
 
-  # Set Niri as default session
-  services.displayManager.defaultSession = "niri";
-
   # Essential desktop packages
   environment.systemPackages = with pkgs; [
+    # SDDM theme dependencies
+    libsForQt5.qt5.qtgraphicaleffects  # Required for blur effects
+    libsForQt5.qt5.qtquickcontrols2     # Required for SDDM themes
+    libsForQt5.qt5.qtsvg                # SVG support for icons
+    kdePackages.breeze                   # Breeze theme with blur
+
     # Wayland utilities
     wl-clipboard
     wlr-randr
