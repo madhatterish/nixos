@@ -104,6 +104,20 @@
   # Swaylock configuration
   xdg.configFile."swaylock/config".source = ../../shared/swaylock.conf;
 
+  # XDG user directories (Downloads, Documents, etc.)
+  xdg.userDirs = {
+    enable = true;
+    createDirectories = true;
+    desktop = "$HOME/Desktop";
+    documents = "$HOME/Documents";
+    download = "$HOME/Downloads";
+    music = "$HOME/Music";
+    pictures = "$HOME/Pictures";
+    publicShare = "$HOME/Public";
+    templates = "$HOME/Templates";
+    videos = "$HOME/Videos";
+  };
+
   # Let Home Manager install and manage itself
   programs.home-manager.enable = true;
 }
