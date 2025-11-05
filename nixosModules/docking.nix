@@ -3,14 +3,10 @@
 {
   # DisplayLink support for USB docking stations
   # Many USB docks (Dell, HP, Lenovo, Plugable, etc.) use DisplayLink chipsets
-  services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
-
-  # Enable DisplayLink service
-  services.displaylink.enable = true;
+  # Note: DisplayLink is only needed for USB-based docks, not Thunderbolt/USB-C with DP Alt Mode
 
   # Kernel modules for USB display adapters
   boot.kernelModules = [
-    "evdi"           # DisplayLink kernel module
     "udl"            # USB DisplayLink
   ];
 
@@ -19,7 +15,7 @@
     "video=HDMI-A-1:D"  # This can help with display detection
   ];
 
-  # Extra kernel modules for USB display devices
+  # Extra kernel modules for USB display devices (EVDI for DisplayLink)
   boot.extraModulePackages = with config.boot.kernelPackages; [
     evdi  # Essential Video Device Linked Interface for DisplayLink
   ];
@@ -48,8 +44,8 @@
     wlr-randr        # Wayland display configuration (already in desktop.nix but important)
     wdisplays        # GUI for configuring displays on Wayland
 
-    # DisplayLink management
-    displaylink-driver
+    # DisplayLink driver for DL-7xxx, DL-6xxx, DL-5xxx, DL-41xx, DL-3xxx series
+    displaylink
 
     # USB utilities for debugging
     usbutils         # lsusb command

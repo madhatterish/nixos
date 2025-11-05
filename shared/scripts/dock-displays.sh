@@ -45,25 +45,26 @@ check_modules() {
     echo ""
 }
 
-# Function to reload displaylink service
-reload_displaylink() {
-    echo "Reloading DisplayLink service..."
-    if systemctl list-unit-files | grep -q "displaylink.service"; then
-        sudo systemctl restart displaylink.service 2>&1 && echo "DisplayLink service restarted successfully" || echo "Failed to restart DisplayLink service (may need password)"
-    else
-        echo "DisplayLink service not installed/configured"
-    fi
+# Function to reload display configuration
+reload_displays() {
+    echo "Reloading display configuration..."
+    echo "Re-probing DRM devices..."
+    # Reload the display by power cycling monitors
+    niri msg action power-off-monitors
+    sleep 1
+    niri msg action power-on-monitors
+    echo "Display reload complete!"
     echo ""
 }
 
-# Function to check displaylink service status
+# Function to check displaylink status
 check_displaylink_status() {
-    echo "DisplayLink Service Status:"
-    echo "---------------------------"
-    if systemctl list-unit-files | grep -q "displaylink.service"; then
-        systemctl status displaylink.service --no-pager -l 2>&1 | head -10 || echo "Service exists but status check requires privileges"
+    echo "DisplayLink Driver Status:"
+    echo "--------------------------"
+    if command -v displaylink &> /dev/null; then
+        echo "DisplayLink driver is installed"
     else
-        echo "DisplayLink service not configured (this is normal if using native drivers)"
+        echo "DisplayLink driver not found (only needed for USB-based docks)"
     fi
     echo ""
 }
@@ -74,8 +75,8 @@ show_menu() {
     echo "1) List all connected displays"
     echo "2) Check USB dock detection"
     echo "3) Check DisplayLink kernel modules"
-    echo "4) Check DisplayLink service status"
-    echo "5) Reload DisplayLink service"
+    echo "4) Check DisplayLink driver status"
+    echo "5) Reload displays (power cycle)"
     echo "6) Show all information"
     echo "7) Enable all displays"
     echo "q) Quit"
@@ -114,7 +115,7 @@ while true; do
         2) check_usb_dock ;;
         3) check_modules ;;
         4) check_displaylink_status ;;
-        5) reload_displaylink ;;
+        5) reload_displays ;;
         6) show_all_info ;;
         7) enable_all_displays ;;
         q|Q) echo "Goodbye!"; exit 0 ;;
