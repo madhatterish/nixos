@@ -47,6 +47,7 @@
 
     # Wallpaper
     swaybg  # Niri compatible wallpaper tool
+    azote   # GUI wallpaper manager for Wayland (works with swaybg)
 
     # Status bar
     waybar
@@ -121,6 +122,21 @@
     serviceConfig = {
       Type = "oneshot";
       ExecStart = "${pkgs.brightnessctl}/bin/brightnessctl --device='*kbd_backlight' set 100%";
+    };
+  };
+
+  # Swaybg wallpaper service (user service)
+  # Usage: Set wallpaper with: swaybg -i /path/to/wallpaper.jpg -m fill &
+  # Or use azote GUI to manage wallpapers
+  systemd.user.services.swaybg = {
+    description = "Wayland wallpaper daemon";
+    wantedBy = [ "graphical-session.target" ];
+    partOf = [ "graphical-session.target" ];
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = "${pkgs.swaybg}/bin/swaybg -i ~/Pictures/Wallpapers/default.jpg -m fill";
+      Restart = "on-failure";
+      RestartSec = 1;
     };
   };
 
