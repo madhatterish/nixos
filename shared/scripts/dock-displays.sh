@@ -69,6 +69,24 @@ check_displaylink_status() {
     echo ""
 }
 
+# Function to force rescan DRM devices
+force_drm_rescan() {
+    echo "Forcing DRM device rescan..."
+    echo "Checking /sys/class/drm..."
+    ls -la /sys/class/drm/ | grep "^d" || echo "No DRM devices found"
+    echo ""
+    echo "Reloading EVDI module..."
+    sudo modprobe -r evdi 2>/dev/null || true
+    sleep 1
+    sudo modprobe evdi
+    sleep 2
+    echo "Checking DRM devices again..."
+    ls -la /sys/class/drm/ | grep "^d"
+    echo ""
+    echo "Rescan complete!"
+    echo ""
+}
+
 # Main menu
 show_menu() {
     echo "Options:"
@@ -77,15 +95,28 @@ show_menu() {
     echo "3) Check DisplayLink kernel modules"
     echo "4) Check DisplayLink driver status"
     echo "5) Reload displays (power cycle)"
-    echo "6) Show all information"
-    echo "7) Enable all displays"
+    echo "6) Force DRM device rescan (requires sudo)"
+    echo "7) Show all information"
+    echo "8) Enable all displays"
     echo "q) Quit"
     echo ""
 }
 
 enable_all_displays() {
     echo "Enabling all detected displays..."
-    wlr-randr --on
+
+    # List all displays first
+    echo "Detected displays:"
+    wlr-randr | grep "^[A-Z]"
+    echo ""
+
+    # Enable each display individually
+    for display in $(wlr-randr | grep "^[A-Z]" | awk '{print $1}'); do
+        echo "Enabling $display..."
+        wlr-randr --output "$display" --on 2>&1 || echo "  (already enabled or failed)"
+    done
+
+    echo ""
     echo "Sending power-on signal to Niri..."
     niri msg action power-on-monitors
     echo "Done!"
@@ -116,8 +147,9 @@ while true; do
         3) check_modules ;;
         4) check_displaylink_status ;;
         5) reload_displays ;;
-        6) show_all_info ;;
-        7) enable_all_displays ;;
+        6) force_drm_rescan ;;
+        7) show_all_info ;;
+        8) enable_all_displays ;;
         q|Q) echo "Goodbye!"; exit 0 ;;
         *) echo "Invalid option" ;;
     esac
