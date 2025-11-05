@@ -108,7 +108,7 @@ binds {
     Mod+C { close-window; }
     Mod+M { quit; }
     Mod+E { spawn "kitty" "yazi"; }
-    Mod+V { toggle-floating; }
+    // Mod+V { toggle-floating; }  // Note: Niri doesn't have floating windows like traditional WMs
     Mod+R { spawn "fuzzel"; }
 
     // Focus movement with arrow keys
@@ -206,8 +206,8 @@ binds {
     Shift+Print { screenshot-window; }  // Screenshots focused window
     Ctrl+Print { screenshot-screen; }  // Screenshots screen (area selection)
 
-    // Lock screen
-    Mod+L { spawn "swaylock"; }
+    // Lock screen (changed to Mod+Shift+L to avoid conflict with focus-column-right)
+    Mod+Shift+Escape { spawn "swaylock"; }
 
     // Switch between preset column widths
     Mod+Comma { consume-or-expel-window-left; }
