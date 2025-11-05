@@ -30,7 +30,6 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.youruser = import ./hosts/work-laptop/home.nix;
-            home-manager.sharedModules = [ niri.homeModules.niri ];
           }
         ];
       };
@@ -47,7 +46,6 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.unaware = import ./hosts/home-laptop/home.nix;
-            home-manager.sharedModules = [ niri.homeModules.niri ];
           }
         ];
       };

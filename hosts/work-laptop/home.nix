@@ -50,12 +50,7 @@
   };
 
   # Niri configuration
-  programs.niri.settings = {
-    # Import config from shared KDL file
-    # Note: Using settings instead of config to work with niri-flake homeModule
-  };
-
-  # Link the KDL config file directly
+  # Link the KDL config file directly - Niri will use this automatically
   xdg.configFile."niri/config.kdl".source = ../../shared/niri.kdl;
 
   # Waybar configuration
