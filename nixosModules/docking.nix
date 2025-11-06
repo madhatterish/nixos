@@ -101,7 +101,8 @@
   ];
 
   # Enable early KMS (Kernel Mode Setting) for better display support
-  boot.initrd.kernelModules = [ "i915" "amdgpu" "radeon" ];
+  # Include evdi for DisplayLink support in initrd
+  boot.initrd.kernelModules = [ "i915" "amdgpu" "radeon" "evdi" ];
 
   # Systemd service to restart display services when dock is connected
   systemd.user.services.dock-display-setup = {
