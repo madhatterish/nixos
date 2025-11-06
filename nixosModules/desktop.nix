@@ -95,9 +95,6 @@
     wl-clipboard
     wlr-randr
 
-    # Screenshot (Niri has built-in screenshot, but need wl-clipboard for clipboard support)
-    # No need for grim/slurp - Niri handles this natively
-
     # Terminal
     kitty
 
