@@ -1,6 +1,12 @@
 { config, pkgs, ... }:
 
 {
+  # Environment variables for Wayland apps
+  environment.sessionVariables = {
+    # Enable Wayland support for Electron/Chromium apps
+    NIXOS_OZONE_WL = "1";
+  };
+
   # Enable Niri
   programs.niri = {
     enable = true;
