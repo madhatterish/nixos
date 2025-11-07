@@ -1,12 +1,12 @@
 // Niri Configuration
 // See https://github.com/YaLTeR/niri/wiki/Configuration:-Overview
 
-workspace "web"
-workspace "code"
-workspace "term"
-workspace "chat"
-workspace "admin"
 workspace "detonate"
+workspace "admin"
+workspace "chat"
+workspace "term"
+workspace "code"
+workspace "web"
 
 // Input configuration
 input {
@@ -235,4 +235,4 @@ spawn-at-startup "dunst"
 spawn-at-startup "nm-applet" "--indicator"
 spawn-at-startup "blueman-applet"
 spawn-at-startup "gnome-keyring-daemon" "--start" "--components=secrets,ssh,pkcs11"
-spawn-at-startup "swaybg" "-i" "~/Pictures/Wallpapers/arc.png" "-m" "fill"
+spawn-at-startup "waypaper" "--restore"
