@@ -10,7 +10,6 @@
     ../../nixosModules/desktop.nix
     ../../nixosModules/gaming.nix
     ../../nixosModules/development.nix
-    ../../nixosModules/docking.nix
   ];
 
   # Hostname
