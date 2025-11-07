@@ -173,8 +173,8 @@ binds {
     Mod+1 { focus-workspace "web"; }
     Mod+2 { focus-workspace "code"; }
     Mod+3 { focus-workspace "term"; }
-    Mod+4 { focus-workspace "chat"; }
-    Mod+5 { focus-workspace "admin"; }
+    Mod+4 { focus-workspace "admin"; }
+    Mod+5 { focus-workspace "chat"; }
     Mod+6 { focus-workspace "detonate"; }
     Mod+7 { focus-workspace 7; }
     Mod+8 { focus-workspace 8; }
@@ -184,8 +184,8 @@ binds {
     Mod+Shift+1 { move-column-to-workspace "web"; }
     Mod+Shift+2 { move-column-to-workspace "code"; }
     Mod+Shift+3 { move-column-to-workspace "term"; }
-    Mod+Shift+4 { move-column-to-workspace "chat"; }
-    Mod+Shift+5 { move-column-to-workspace "admin"; }
+    Mod+Shift+4 { move-column-to-workspace "admin"; }
+    Mod+Shift+5 { move-column-to-workspace "chat"; }
     Mod+Shift+6 { move-column-to-workspace "detonate"; }
     Mod+Shift+7 { move-column-to-workspace 7; }
     Mod+Shift+8 { move-column-to-workspace 8; }
