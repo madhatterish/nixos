@@ -117,7 +117,6 @@ binds {
     Mod+C { close-window; }
     Mod+M { quit; }
     Mod+E { spawn "kitty" "yazi"; }
-    // Mod+V { toggle-floating; }  // Note: Niri doesn't have floating windows like traditional WMs
     Mod+R { spawn "fuzzel"; }
 
     // Focus movement with arrow keys
@@ -216,7 +215,7 @@ binds {
     Ctrl+Print { screenshot-screen; }  // Screenshots screen (area selection)
 
     // Lock screen (changed to Mod+Shift+L to avoid conflict with focus-column-right)
-    Mod+Shift+Escape { spawn "swaylock"; }
+    Mod+Shift+Escape { spawn "swaylock-effects"; }
 
     // Display/Dock configuration helper - Super+D for quick dock/display setup
     Mod+D { spawn "kitty" "-e" "bash" "-c" "~/nixos-config/shared/scripts/dock-displays.sh --auto; read -p 'Press Enter to close...'"; }
