@@ -2,12 +2,11 @@
 // See https://github.com/YaLTeR/niri/wiki/Configuration:-Overview
 
 workspace "web"
-workspace "detonate"
+workspace "code"
+workspace "term"
 workspace "admin"
 workspace "chat"
-workspace "term"
-workspace "code"
-
+workspace "detonate"
 
 // Input configuration
 input {
