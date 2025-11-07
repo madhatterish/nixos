@@ -215,7 +215,7 @@ binds {
     Ctrl+Print { screenshot-screen; }  // Screenshots screen (area selection)
 
     // Lock screen (changed to Mod+Shift+L to avoid conflict with focus-column-right)
-    Mod+Shift+Escape { spawn "swaylock-effects"; }
+    Mod+Shift+Escape { spawn "swaylock"; }
 
     // Display/Dock configuration helper - Super+D for quick dock/display setup
     Mod+D { spawn "kitty" "-e" "bash" "-c" "~/nixos-config/shared/scripts/dock-displays.sh --auto; read -p 'Press Enter to close...'"; }
