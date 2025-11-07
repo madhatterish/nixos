@@ -220,10 +220,10 @@
       Type = "simple";
       ExecStart = ''
         ${pkgs.swayidle}/bin/swayidle -w \
-          timeout 600 '${pkgs.swaylock-effects}/bin/swaylock -f' \
+          timeout 600 '${pkgs.swaylock-effects}/bin/swaylock -f -C ~/.config/swaylock/config' \
           timeout 900 'niri msg action power-off-monitors' \
           resume 'niri msg action power-on-monitors' \
-          before-sleep '${pkgs.swaylock-effects}/bin/swaylock -f'
+          before-sleep '${pkgs.swaylock-effects}/bin/swaylock -f -C ~/.config/swaylock/config'
       '';
       Restart = "on-failure";
       RestartSec = 3;
