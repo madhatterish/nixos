@@ -1,15 +1,12 @@
 // Niri Configuration
 // See https://github.com/YaLTeR/niri/wiki/Configuration:-Overview
 
-//named workspaces
-workspaces {
-    "web"
-    "code"
-    "term"
-    "chat"
-    "admin"
-    "detonate"
-}
+workspace "web"
+workspace "code"
+workspace "term"
+workspace "chat"
+workspace "admin"
+workspace "detonate"
 
 // Input configuration
 input {
