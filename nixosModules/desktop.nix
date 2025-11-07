@@ -123,6 +123,7 @@
     # Screen lock
     swaylock-effects  # Enhanced swaylock with blur and effects
     swayidle          # Idle management daemon
+    grim              # Screenshot tool (required for swaylock-effects screenshots)
 
     # Network management GUI
     networkmanagerapplet
