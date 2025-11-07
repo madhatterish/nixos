@@ -31,9 +31,9 @@
   # Git configuration
   programs.git = {
     enable = true;
-    userName = "Your Name";
-    userEmail = "work@example.com";
-    extraConfig = {
+    settings = {
+      user.name = "Your Name";
+      user.email = "work@example.com";
       init.defaultBranch = "main";
       pull.rebase = true;
     };
@@ -66,7 +66,7 @@
   # Kitty terminal configuration
   programs.kitty = {
     enable = true;
-    theme = "Tokyo Night";
+    themeFile = "tokyo_night_night";
     font = {
       name = "FiraCode Nerd Font";
       size = 11;
@@ -105,6 +105,8 @@
   xdg.configFile."swaylock/config".source = ../../shared/swaylock.conf;
 
   # XDG user directories (Downloads, Documents, etc.)
+  # Force overwrite of existing user-dirs.dirs file
+  xdg.configFile."user-dirs.dirs".force = true;
   xdg.userDirs = {
     enable = true;
     createDirectories = true;
