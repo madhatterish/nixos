@@ -221,10 +221,10 @@
       Type = "simple";
       ExecStart = ''
         ${pkgs.swayidle}/bin/swayidle -w \
-          timeout 600 '${pkgs.swaylock-effects}/bin/swaylock -f -C ~/.config/swaylock/config' \
+          timeout 600 'bash ~/nixos/shared/scripts/lock-screen.sh' \
           timeout 900 'niri msg action power-off-monitors' \
           resume 'niri msg action power-on-monitors' \
-          before-sleep '${pkgs.swaylock-effects}/bin/swaylock -f -C ~/.config/swaylock/config'
+          before-sleep 'bash ~/nixos/shared/scripts/lock-screen.sh'
       '';
       Restart = "on-failure";
       RestartSec = 3;
