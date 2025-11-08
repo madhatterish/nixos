@@ -45,6 +45,58 @@
     };
   };
 
+  # SSH configuration
+  programs.ssh = {
+    enable = true;
+
+    # Add SSH keys to agent automatically
+    addKeysToAgent = "yes";
+
+    # SSH client configuration
+    extraConfig = ''
+      # Enable agent forwarding (be careful with this on untrusted networks)
+      ForwardAgent no
+
+      # Use ssh-agent from gnome-keyring
+      IdentityAgent ~/.ssh/agent
+    '';
+
+    # Host-specific configurations
+    matchBlocks = {
+      # Infrastructure servers (use infrastructure key)
+      "*.prod *.staging" = {
+        user = "admin";
+        identityFile = "~/.ssh/infrastructure_ed25519";
+        identitiesOnly = true;
+      };
+
+      # Network equipment
+      "switch* router*" = {
+        user = "admin";
+        identityFile = "~/.ssh/network_ed25519";
+        identitiesOnly = true;
+      };
+
+      # Windows servers (usually use password/kerberos, but can use SSH on newer Windows)
+      "win-*" = {
+        user = "administrator";
+        # identityFile = "~/.ssh/windows_ed25519";
+      };
+
+      # GitHub/GitLab
+      "github.com" = {
+        user = "git";
+        identityFile = "~/.ssh/github_ed25519";
+        identitiesOnly = true;
+      };
+    };
+  };
+
+  # SSH Agent service (integrated with gnome-keyring which is already running)
+  services.ssh-agent = {
+    enable = true;
+  };
+
   # Niri configuration
   # Link the KDL config file directly - Niri will use this automatically
   xdg.configFile."niri/config.kdl".source = ../../shared/niri.kdl;

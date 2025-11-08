@@ -1,0 +1,68 @@
+---
+# Getting Started with Ansible
+# Simple playbook to test connectivity and gather basic server information
+# Usage: ansible-playbook playbooks/getting-started.yml
+
+- name: Basic Server Health Check
+  hosts: all
+  gather_facts: yes
+
+  tasks:
+    - name: Test connectivity (ping)
+      ansible.builtin.ping:
+      register: ping_result
+
+    - name: Display connection success
+      ansible.builtin.debug:
+        msg: "✓ Connected to {{ inventory_hostname }} ({{ ansible_host }})"
+
+    - name: Get server uptime
+      ansible.builtin.command: uptime
+      register: uptime_result
+      changed_when: false
+      when: ansible_os_family != "Windows"
+
+    - name: Display uptime
+      ansible.builtin.debug:
+        msg: "{{ uptime_result.stdout }}"
+      when: uptime_result is defined and uptime_result.stdout is defined
+
+    - name: Check disk space
+      ansible.builtin.shell: df -h / | tail -1
+      register: disk_result
+      changed_when: false
+      when: ansible_os_family != "Windows"
+
+    - name: Display disk usage
+      ansible.builtin.debug:
+        msg: "Root disk: {{ disk_result.stdout }}"
+      when: disk_result is defined and disk_result.stdout is defined
+
+    - name: Check memory usage
+      ansible.builtin.shell: free -h | grep Mem
+      register: mem_result
+      changed_when: false
+      when: ansible_os_family != "Windows"
+
+    - name: Display memory usage
+      ansible.builtin.debug:
+        msg: "{{ mem_result.stdout }}"
+      when: mem_result is defined and mem_result.stdout is defined
+
+# Generate a summary report
+- name: Generate Summary Report
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+    - name: Summary
+      ansible.builtin.debug:
+        msg: |
+          ==========================================
+          Health check complete!
+
+          Next steps:
+          1. Check server-specific info with: ansible hostname -m setup
+          2. Run commands on all servers: ansible all -a "command"
+          3. Try the WSUS playbook: ansible-playbook playbooks/review-updates.yml
+          ==========================================
