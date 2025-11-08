@@ -224,7 +224,7 @@ binds {
     Mod+Shift+D { spawn "wdisplays"; }
 
     // SSH Connection Launcher - Super+S for SSH host selector
-    Mod+S { spawn "bash" "-c" "~/nixos/shared/scripts/ssh-launcher.sh"; }
+    Mod+S { spawn "ssh-launcher"; }
 
     // Switch between preset column widths
     Mod+Comma { consume-or-expel-window-left; }

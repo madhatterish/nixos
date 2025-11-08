@@ -89,8 +89,13 @@
     blur=true
   '';
 
-  # Essential desktop packages
+  # SSH launcher script wrapper
   environment.systemPackages = with pkgs; [
+    (pkgs.writeScriptBin "ssh-launcher" ''
+      #!${pkgs.bash}/bin/bash
+      ${builtins.readFile ../shared/scripts/ssh-launcher.sh}
+    '')
+  ] ++ (with pkgs; [
     # SDDM theme dependencies
     libsForQt5.qt5.qtgraphicaleffects  # Required for blur effects
     libsForQt5.qt5.qtquickcontrols2     # Required for SDDM themes
@@ -154,7 +159,7 @@
 
     # Backlight control
     brightnessctl
-  ];
+  ]);
 
   # Sound with PipeWire (PulseAudio compatibility for Waybar)
   services.pulseaudio.enable = false;
