@@ -64,4 +64,30 @@
       chmod 600 /var/lib/netbox/secret-key
     fi
   '';
+
+  # Notification service when NetBox is ready
+  systemd.services.netbox-ready = lib.mkIf config.services.netbox.enable {
+    description = "NetBox Ready Notification";
+    after = [ "netbox.service" "netbox-rq.service" "nginx.service" ];
+    wants = [ "netbox.service" "netbox-rq.service" "nginx.service" ];
+    wantedBy = [ "multi-user.target" ];
+
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = pkgs.writeShellScript "netbox-ready" ''
+        # Wait for NetBox to be actually responding
+        for i in {1..60}; do
+          if ${pkgs.curl}/bin/curl -sf http://127.0.0.1:8080 > /dev/null 2>&1; then
+            echo "================================================"
+            echo "NetBox is ready!"
+            echo "Access at: http://localhost:8080"
+            echo "================================================"
+            break
+          fi
+          sleep 2
+        done
+      '';
+    };
+  };
 }
