@@ -9,15 +9,17 @@
     ../../nixosModules/common.nix
     ../../nixosModules/desktop.nix
     ../../nixosModules/development.nix
+    ../../nixosModules/netbox.nix
   ];
 
   # Hostname
   networking.hostName = "work-laptop";
 
-  # Enable PostgreSQL for development
+  # Enable PostgreSQL for development (also used by NetBox)
   services.postgresql = {
     enable = true;
     package = pkgs.postgresql_15;
+    # NetBox database is created by netbox.nix module
   };
 
   # Users
