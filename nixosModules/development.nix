@@ -23,7 +23,7 @@
     docker-compose
 
     # Text editors and IDEs
-    vscode
+    (vscode.fhs)  # FHS-compatible VSCode for extensions with native binaries
     lens
 
     # Database tools
