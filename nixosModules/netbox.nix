@@ -33,11 +33,11 @@
     port = 6379;
   };
 
-  # Create secret key file if it doesn't exist
+  # Create secret key file if it doesn't exist (must be exactly 50 characters)
   system.activationScripts.netbox-secret = lib.mkIf config.services.netbox.enable ''
     if [ ! -f /var/lib/netbox/secret-key ]; then
       mkdir -p /var/lib/netbox
-      ${pkgs.openssl}/bin/openssl rand -base64 32 > /var/lib/netbox/secret-key
+      ${pkgs.openssl}/bin/openssl rand -hex 25 > /var/lib/netbox/secret-key
       chown netbox:netbox /var/lib/netbox/secret-key
       chmod 600 /var/lib/netbox/secret-key
     fi
