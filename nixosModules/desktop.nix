@@ -95,6 +95,10 @@
       #!${pkgs.bash}/bin/bash
       ${builtins.readFile ../shared/scripts/ssh-launcher.sh}
     '')
+    (pkgs.writeScriptBin "k8s-context-switcher" ''
+      #!${pkgs.bash}/bin/bash
+      ${builtins.readFile ../shared/scripts/k8s-context-switcher.sh}
+    '')
   ] ++ (with pkgs; [
     # SDDM theme dependencies
     libsForQt5.qt5.qtgraphicaleffects  # Required for blur effects
