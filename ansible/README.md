@@ -1,6 +1,55 @@
-# Ansible WSUS/Windows Update Management
+# Ansible Infrastructure Management
 
 This directory contains Ansible playbooks and inventory for managing infrastructure, including Windows updates via WSUS.
+
+## SSH Key Setup
+
+### Quick Start
+
+Run the SSH key setup helper:
+```bash
+bash ~/nixos/shared/scripts/setup-ssh-keys.sh
+```
+
+This will generate separate SSH keys for:
+- `infrastructure_ed25519` - Linux/Unix servers
+- `network_ed25519` - Network equipment (switches, routers)
+- `github_ed25519` - Git repositories
+
+### Manual Key Generation
+
+If you prefer to generate keys manually:
+```bash
+# Infrastructure servers
+ssh-keygen -t ed25519 -f ~/.ssh/infrastructure_ed25519 -C "infrastructure-$(hostname)"
+
+# Network equipment
+ssh-keygen -t ed25519 -f ~/.ssh/network_ed25519 -C "network-$(hostname)"
+```
+
+### Deploy Public Keys to Servers
+
+```bash
+# Copy to a specific server
+ssh-copy-id -i ~/.ssh/infrastructure_ed25519.pub admin@web01.prod
+
+# Or manually add to ~/.ssh/authorized_keys on the server
+cat ~/.ssh/infrastructure_ed25519.pub | ssh admin@server "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
+```
+
+### Using SSH Keys with Ansible
+
+Your `~/.ssh/config` (managed by home-manager) automatically uses the correct keys:
+- `*.prod`, `*.staging` → `infrastructure_ed25519`
+- `switch*`, `router*` → `network_ed25519`
+
+You can override per-host in the inventory:
+```yaml
+hosts:
+  special-server:
+    ansible_host: 10.0.1.100
+    ansible_ssh_private_key_file: ~/.ssh/special_key_ed25519
+```
 
 ## Prerequisites
 

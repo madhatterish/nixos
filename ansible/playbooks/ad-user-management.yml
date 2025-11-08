@@ -1,0 +1,87 @@
+---
+# Active Directory User Management Example
+# This is a template for common AD tasks
+# Usage: ansible-playbook playbooks/ad-user-management.yml --extra-vars "action=list"
+
+- name: Active Directory User Management
+  hosts: localhost  # Run from Ansible control node
+  gather_facts: no
+
+  vars:
+    # Domain settings (customize these)
+    ad_domain: "example.com"
+    ad_server: "dc01.example.com"
+    ad_user: "admin@example.com"
+    # ad_password should be passed via --extra-vars or vault
+
+  tasks:
+    # List all users in an OU
+    - name: List users in specific OU
+      ansible.builtin.shell: |
+        ldapsearch -x -H ldap://{{ ad_server }} \
+          -D "{{ ad_user }}" -w "{{ ad_password | default('PROMPT') }}" \
+          -b "OU=Users,DC=example,DC=com" \
+          "(objectClass=user)" cn mail
+      register: user_list
+      when: action | default('list') == 'list'
+
+    - name: Display users
+      ansible.builtin.debug:
+        var: user_list.stdout_lines
+      when: action | default('list') == 'list'
+
+    # Note: For production AD management, consider:
+    # 1. Using ansible.windows.win_domain_user module (runs on Windows)
+    # 2. Using community.windows.win_domain_group for group management
+    # 3. Using Ansible Vault for password management
+    # 4. Using PowerShell DSC for complex configurations
+
+# Example Windows-based AD user creation
+- name: Create AD User (Windows)
+  hosts: windows
+  gather_facts: no
+
+  tasks:
+    - name: Create new AD user
+      ansible.windows.win_domain_user:
+        name: "{{ username }}"
+        firstname: "{{ firstname }}"
+        surname: "{{ lastname }}"
+        password: "{{ user_password }}"
+        state: present
+        enabled: yes
+        groups:
+          - "Domain Users"
+        path: "OU=Users,DC=example,DC=com"
+      when: action | default('') == 'create'
+
+    - name: Add user to group
+      ansible.windows.win_domain_group_membership:
+        name: "{{ group_name }}"
+        members:
+          - "{{ username }}"
+        state: present
+      when: action | default('') == 'add_to_group'
+
+    - name: Disable AD user
+      ansible.windows.win_domain_user:
+        name: "{{ username }}"
+        enabled: no
+      when: action | default('') == 'disable'
+
+# Usage examples:
+#
+# List users:
+#   ansible-playbook playbooks/ad-user-management.yml --extra-vars "action=list ad_password=YourPassword"
+#
+# Create user:
+#   ansible-playbook playbooks/ad-user-management.yml \
+#     --extra-vars "action=create username=jsmith firstname=John lastname=Smith user_password=P@ssw0rd"
+#
+# Add to group:
+#   ansible-playbook playbooks/ad-user-management.yml \
+#     --extra-vars "action=add_to_group username=jsmith group_name='IT Support'"
+#
+# Disable user:
+#   ansible-playbook playbooks/ad-user-management.yml \
+#     --extra-vars "action=disable username=jsmith"
