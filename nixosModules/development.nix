@@ -23,7 +23,7 @@
     docker-compose
 
     # Text editors and IDEs
-    # vscode (temporarily removed for clean reinstall)
+    vscode
     lens
 
     # Database tools
