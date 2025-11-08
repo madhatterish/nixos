@@ -1,0 +1,81 @@
+---
+# Interactive Windows Update Review
+# This playbook shows available updates and waits for approval before installing
+# Usage: ansible-playbook review-updates.yml
+
+- name: Review and Approve Windows Updates
+  hosts: windows
+  gather_facts: yes
+
+  vars:
+    update_categories:
+      - CriticalUpdates
+      - SecurityUpdates
+      - UpdateRollups
+
+  tasks:
+    - name: Search for available updates
+      ansible.windows.win_updates:
+        state: searched
+        category_names: "{{ update_categories }}"
+      register: available_updates
+
+    - name: Display update count
+      ansible.builtin.debug:
+        msg: |
+          ==========================================
+          Host: {{ inventory_hostname }}
+          Available Updates: {{ available_updates.found_update_count }}
+          ==========================================
+
+    - name: Show update details
+      ansible.builtin.debug:
+        msg: |
+          Title: {{ item.title }}
+          KB: KB{{ item.kb[0] if item.kb else 'N/A' }}
+          Categories: {{ item.categories | join(', ') }}
+          Severity: {{ item.severity | default('N/A') }}
+      loop: "{{ available_updates.updates | default({}) | dict2items | map(attribute='value') | list }}"
+      when: available_updates.found_update_count > 0
+
+    - name: Pause for review
+      ansible.builtin.pause:
+        prompt: |
+
+          Found {{ available_updates.found_update_count }} updates for {{ inventory_hostname }}.
+
+          Do you want to install these updates? (yes/no)
+      register: approval
+      when: available_updates.found_update_count > 0
+
+    - name: Install approved updates
+      ansible.windows.win_updates:
+        state: installed
+        category_names: "{{ update_categories }}"
+        reboot: no
+      when:
+        - available_updates.found_update_count > 0
+        - approval.user_input | default('no') | lower == 'yes'
+      register: install_result
+
+    - name: Check if reboot is required
+      ansible.builtin.debug:
+        msg: "REBOOT REQUIRED for {{ inventory_hostname }}"
+      when:
+        - install_result is defined
+        - install_result.reboot_required | default(false)
+
+    - name: Ask about reboot
+      ansible.builtin.pause:
+        prompt: "Reboot {{ inventory_hostname }} now? (yes/no)"
+      register: reboot_approval
+      when:
+        - install_result is defined
+        - install_result.reboot_required | default(false)
+
+    - name: Reboot if approved
+      ansible.windows.win_reboot:
+        reboot_timeout: 600
+      when:
+        - reboot_approval is defined
+        - reboot_approval.user_input | default('no') | lower == 'yes'

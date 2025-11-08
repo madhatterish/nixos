@@ -70,6 +70,27 @@ all:
           device_type: router
           location: DC1
 
+    # Windows Servers (for WSUS/Windows Updates management)
+    windows:
+      hosts:
+        win-srv01:
+          ansible_host: 10.0.4.10
+          rack: E1
+          location: DC1
+          vlan: 500
+          purpose: Windows application server
+        win-srv02:
+          ansible_host: 10.0.4.11
+          rack: E1
+          location: DC1
+          vlan: 500
+          purpose: Windows database server
+      vars:
+        ansible_connection: winrm
+        ansible_winrm_transport: kerberos
+        ansible_winrm_server_cert_validation: ignore
+        ansible_port: 5986
+
   # Global variables
   vars:
     ansible_user: admin

@@ -1,0 +1,96 @@
+---
+# Windows Update Management via WSUS
+# This playbook checks for, downloads, and optionally installs Windows updates
+# Usage:
+#   Check only:     ansible-playbook windows-updates.yml --tags check
+#   Download only:  ansible-playbook windows-updates.yml --tags download
+#   Install all:    ansible-playbook windows-updates.yml --tags install
+#   Install critical: ansible-playbook windows-updates.yml -e "update_categories=['CriticalUpdates','SecurityUpdates']"
+
+- name: Manage Windows Updates via WSUS
+  hosts: windows
+  gather_facts: yes
+
+  vars:
+    # Update categories to install (can override with -e)
+    update_categories:
+      - CriticalUpdates
+      - SecurityUpdates
+      - UpdateRollups
+      - Updates
+
+    # Set to yes to automatically reboot if required
+    auto_reboot: no
+
+    # Set to yes to install updates automatically
+    auto_install: no
+
+  tasks:
+    - name: Check for available updates
+      ansible.windows.win_updates:
+        state: searched
+        category_names: "{{ update_categories }}"
+      register: update_results
+      tags: [check, download, install]
+
+    - name: Display available updates
+      ansible.builtin.debug:
+        msg: |
+          Host: {{ inventory_hostname }}
+          Updates found: {{ update_results.found_update_count | default(0) }}
+          Updates installed: {{ update_results.installed_update_count | default(0) }}
+          Reboot required: {{ update_results.reboot_required | default(false) }}
+      tags: [check, download, install]
+
+    - name: List update details
+      ansible.builtin.debug:
+        msg: "{{ item.title }} - KB{{ item.kb[0] if item.kb else 'N/A' }}"
+      loop: "{{ update_results.updates | default({}) | dict2items | map(attribute='value') | list }}"
+      when: update_results.found_update_count > 0
+      tags: [check]
+
+    - name: Download updates (no install)
+      ansible.windows.win_updates:
+        state: downloaded
+        category_names: "{{ update_categories }}"
+      register: download_results
+      when: update_results.found_update_count > 0
+      tags: [download]
+
+    - name: Install updates
+      ansible.windows.win_updates:
+        state: installed
+        category_names: "{{ update_categories }}"
+        reboot: "{{ auto_reboot }}"
+      register: install_results
+      when: auto_install or 'install' in ansible_run_tags
+      tags: [install]
+
+    - name: Create update report
+      ansible.builtin.set_fact:
+        update_report:
+          hostname: "{{ inventory_hostname }}"
+          ip: "{{ ansible_host }}"
+          updates_found: "{{ update_results.found_update_count | default(0) }}"
+          updates_installed: "{{ install_results.installed_update_count | default(0) }}"
+          reboot_required: "{{ install_results.reboot_required | default(false) }}"
+          timestamp: "{{ ansible_date_time.iso8601 }}"
+      tags: [install]
+
+    - name: Save update report
+      ansible.builtin.copy:
+        content: "{{ update_report | to_nice_json }}"
+        dest: "/tmp/{{ inventory_hostname }}_update_report.json"
+      delegate_to: localhost
+      when: install_results is defined
+      tags: [install]
+
+# Generate summary report
+- name: Generate Update Summary
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Display summary
+      ansible.builtin.debug:
+        msg: "Update reports saved to /tmp/*_update_report.json"
+      tags: [install]
