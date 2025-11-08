@@ -112,6 +112,7 @@
 
     # Notifications
     dunst
+    libnotify  # Provides notify-send command
 
     # Wallpaper
     swaybg    # Niri compatible wallpaper tool
