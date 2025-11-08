@@ -223,6 +223,9 @@ binds {
     // Display configuration GUI - Super+Shift+D for graphical display config
     Mod+Shift+D { spawn "wdisplays"; }
 
+    // SSH Connection Launcher - Super+S for SSH host selector
+    Mod+S { spawn "bash" "-c" "~/nixos/shared/scripts/ssh-launcher.sh"; }
+
     // Switch between preset column widths
     Mod+Comma { consume-or-expel-window-left; }
     Mod+Period { consume-or-expel-window-right; }

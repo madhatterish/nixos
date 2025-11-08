@@ -2,6 +2,33 @@
 result
 result-*
 
+# Ansible sensitive files - NEVER COMMIT THESE
+ansible/secrets.yml
+ansible/vault-password.txt
+ansible/*.pem
+ansible/*.key
+ansible/group_vars/all/vault.yml
+ansible/host_vars/*/vault.yml
+
+# SSH keys
+*.pem
+*.key
+id_rsa
+id_ed25519
+
+# Environment files with secrets
+.env
+*.env
+
+# Any files with these keywords
+*secret*
+*password*
+*credentials*
+*.vault
+
+# NetBox secrets
+/etc/netbox-secret-key
+
 # Nix development shells
 .direnv/
 .envrc

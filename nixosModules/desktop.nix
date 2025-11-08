@@ -141,6 +141,16 @@
     gnome-keyring
     seahorse  # GUI for managing passwords/credentials
 
+    # Infrastructure & Remote Management
+    ansible  # Automation for 100+ servers
+    tmux     # Terminal multiplexer for persistent SSH sessions
+    remmina  # GUI for RDP/VNC connections
+
+    # Network utilities for IPAM workflows
+    ipcalc   # IP subnet calculator
+    sipcalc  # Advanced IP calculator
+    nmap     # Network scanning and discovery
+
     # Backlight control
     brightnessctl
   ];

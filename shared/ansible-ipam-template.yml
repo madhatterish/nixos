@@ -1,0 +1,76 @@
+# Ansible Inventory with IPAM data
+# This serves as both your Ansible inventory and IP address management database
+# Store at ~/ansible/inventory.yml and version control with git
+
+all:
+  children:
+    # Production Servers
+    production:
+      children:
+        web_servers:
+          hosts:
+            web01.prod:
+              ansible_host: 10.0.1.10
+              rack: A1
+              location: DC1
+              vlan: 100
+              purpose: Frontend web server
+            web02.prod:
+              ansible_host: 10.0.1.11
+              rack: A1
+              location: DC1
+              vlan: 100
+              purpose: Frontend web server
+
+        database_servers:
+          hosts:
+            db01.prod:
+              ansible_host: 10.0.2.10
+              rack: B1
+              location: DC1
+              vlan: 200
+              purpose: PostgreSQL primary
+            db02.prod:
+              ansible_host: 10.0.2.11
+              rack: B1
+              location: DC1
+              vlan: 200
+              purpose: PostgreSQL replica
+
+        app_servers:
+          hosts:
+            app01.prod:
+              ansible_host: 10.0.3.10
+              rack: C1
+              location: DC1
+              vlan: 300
+              purpose: Application server
+
+    # Development/Staging Servers
+    staging:
+      hosts:
+        dev01.staging:
+          ansible_host: 10.1.1.10
+          rack: D1
+          location: DC2
+          vlan: 400
+          purpose: Development server
+
+    # Network Equipment (monitoring only, no ansible access)
+    network:
+      hosts:
+        switch01:
+          ansible_host: 10.0.0.1
+          ansible_connection: network_cli
+          device_type: switch
+          location: DC1
+        router01:
+          ansible_host: 10.0.0.254
+          ansible_connection: network_cli
+          device_type: router
+          location: DC1
+
+  # Global variables
+  vars:
+    ansible_user: admin
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
