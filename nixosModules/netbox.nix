@@ -2,19 +2,36 @@
 
 {
   # NetBox - IP Address Management (IPAM) and Data Center Infrastructure Management (DCIM)
-  # Access at http://localhost:8001 after enabling
+  # Access at http://localhost:8080 after enabling
 
   # NetBox service
   services.netbox = {
     enable = true;
-    package = pkgs.netbox;
-
-    # Listen on localhost only (access via http://localhost:8001)
-    listenAddress = "127.0.0.1";
-    port = 8001;
-
-    # Secret key - automatically generated and stored
     secretKeyFile = "/var/lib/netbox/secret-key";
+  };
+
+  # Nginx reverse proxy for NetBox (required for static files)
+  services.nginx = {
+    enable = true;
+    user = "netbox";
+    recommendedProxySettings = true;
+    clientMaxBodySize = "25m";
+
+    virtualHosts."localhost" = {
+      listen = [{
+        addr = "127.0.0.1";
+        port = 8080;
+      }];
+
+      locations = {
+        "/" = {
+          proxyPass = "http://[::1]:8001";
+        };
+        "/static/" = {
+          alias = "${config.services.netbox.dataDir}/static/";
+        };
+      };
+    };
   };
 
   # PostgreSQL database for NetBox
