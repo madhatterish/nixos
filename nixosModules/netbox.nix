@@ -4,6 +4,11 @@
   # NetBox - IP Address Management (IPAM) and Data Center Infrastructure Management (DCIM)
   # Access at http://localhost:8080 after enabling
 
+  # Allow insecure/EOL NetBox version (4.2.9) until a newer version is available
+  nixpkgs.config.permittedInsecurePackages = [
+    "netbox-4.2.9"
+  ];
+
   # NetBox service
   services.netbox = {
     enable = true;
