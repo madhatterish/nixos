@@ -104,6 +104,9 @@
   # Swaylock configuration
   xdg.configFile."swaylock/config".source = ../../shared/swaylock.conf;
 
+  # Ansible inventory - symlink from repo to ~/ansible/inventory.yml
+  home.file."ansible/inventory.yml".source = ../../ansible/inventory.yml;
+
   # XDG user directories (Downloads, Documents, etc.)
   # Force overwrite of existing user-dirs.dirs file
   xdg.configFile."user-dirs.dirs".force = true;
