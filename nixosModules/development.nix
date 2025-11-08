@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   # Development tools and environments
@@ -53,8 +53,10 @@
   # virtualisation.podman.enable = true;
 
   # Development databases
+  # Note: PostgreSQL service configuration can be overridden by other modules (e.g., netbox.nix)
+  # The postgresql package above provides client tools (psql, etc.)
   services.postgresql = {
-    enable = false; # Enable on work laptop if needed
-    package = pkgs.postgresql_15;
+    enable = lib.mkDefault false; # Can be overridden by other modules
+    package = lib.mkDefault pkgs.postgresql_15;
   };
 }
