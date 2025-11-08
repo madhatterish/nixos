@@ -10,6 +10,7 @@
     ../../nixosModules/desktop.nix
     ../../nixosModules/gaming.nix
     ../../nixosModules/development.nix
+    ../../nixosModules/netbox.nix
   ];
 
   # Hostname
