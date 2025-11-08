@@ -53,10 +53,6 @@
   # virtualisation.podman.enable = true;
 
   # Development databases
-  # Note: PostgreSQL service configuration can be overridden by other modules (e.g., netbox.nix)
+  # Note: PostgreSQL service is configured in netbox.nix or host-specific configs as needed
   # The postgresql package above provides client tools (psql, etc.)
-  services.postgresql = {
-    enable = lib.mkDefault false; # Can be overridden by other modules
-    package = lib.mkDefault pkgs.postgresql_15;
-  };
 }

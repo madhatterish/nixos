@@ -19,7 +19,7 @@
 
   # PostgreSQL database for NetBox
   services.postgresql = {
-    enable = lib.mkForce true; # NetBox requires PostgreSQL
+    enable = true;
     ensureDatabases = [ "netbox" ];
     ensureUsers = [{
       name = "netbox";
