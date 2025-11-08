@@ -211,21 +211,6 @@
     };
   };
 
-  # Swaybg wallpaper service (user service)
-  # Usage: Set wallpaper with: swaybg -i /path/to/wallpaper.jpg -m fill &
-  # Or use waypaper GUI to manage wallpapers
-  systemd.user.services.swaybg = {
-    description = "Wayland wallpaper daemon";
-    wantedBy = [ "graphical-session.target" ];
-    partOf = [ "graphical-session.target" ];
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = "${pkgs.swaybg}/bin/swaybg -i ~/Pictures/Wallpapers/default.jpg -m fill";
-      Restart = "on-failure";
-      RestartSec = 1;
-    };
-  };
-
   # Swayidle service for automatic screen locking
   # Locks screen after 10 minutes of inactivity, turns off display after 15 minutes
   systemd.user.services.swayidle = {
