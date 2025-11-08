@@ -100,6 +100,9 @@
   # Swaylock configuration
   xdg.configFile."swaylock/config".source = ../../shared/swaylock.conf;
 
+  # Tmux configuration
+  xdg.configFile."tmux/tmux.conf".source = ../../shared/tmux.conf;
+
   # XDG user directories (Downloads, Documents, etc.)
   # Force overwrite of existing user-dirs.dirs file
   xdg.configFile."user-dirs.dirs".force = true;
