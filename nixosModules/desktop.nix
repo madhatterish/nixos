@@ -113,11 +113,17 @@
     # Terminal
     kitty
 
+    # Notetaking
+    obsidian
+
+    # tasking
+    taskwarrior3
+
     # File manager
     yazi
 
     # Application launcher
-    fuzzel  # Niri works well with fuzzel (or you can use rofi)
+    fuzzel
 
     # Notifications
     dunst
