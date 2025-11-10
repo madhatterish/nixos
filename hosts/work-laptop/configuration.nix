@@ -39,10 +39,21 @@
     # Productivity
     libreoffice
 
-    # VPN clients (uncomment if needed)
-    # openvpn
-    # networkmanager-openvpn
+    # VPN clients
+    (pkgs.callPackage ../../pkgs/netextender {})
   ];
+
+  # Enable PPP for NetExtender VPN
+  programs.ppp.enable = true;
+
+  # Allow NetExtender to run with sudo without password
+  security.sudo.extraRules = [{
+    users = [ "youruser" ];
+    commands = [{
+      command = "${pkgs.callPackage ../../pkgs/netextender {}}/bin/netextender";
+      options = [ "NOPASSWD" ];
+    }];
+  }];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
