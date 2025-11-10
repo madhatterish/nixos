@@ -25,7 +25,7 @@
     # Text editors and IDEs
     (vscode.fhs)  # FHS-compatible VSCode for extensions with native binaries
     lens
-    cursor
+    code-cursor
 
     # Database tools
     postgresql
