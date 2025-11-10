@@ -26,9 +26,6 @@
     (vscode.fhs)  # FHS-compatible VSCode for extensions with native binaries
     lens
 
-    # db administration
-    beekeeper-studio
-
     # Database tools
     postgresql
     sqlite
