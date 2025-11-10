@@ -226,6 +226,9 @@ binds {
     // SSH Connection Launcher - Super+S for SSH host selector
     Mod+S { spawn "ssh-launcher"; }
 
+    // Kubernetes Context Switcher - Super+K for k8s context/namespace selector
+    Mod+K { spawn "k8s-context-switcher"; }
+
     // Switch between preset column widths
     Mod+Comma { consume-or-expel-window-left; }
     Mod+Period { consume-or-expel-window-right; }
