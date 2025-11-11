@@ -19,7 +19,7 @@ stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "https://software.sonicwall.com/NetExtender/NetExtender.Linux-${version}.x86_64.tgz";
-    sha256 = ""; # Nix will tell you the correct hash on first build
+    sha256 = "sha256-qmcG1pSm0ixCpTEHZBzBBEZDI4H0tsGcKX8ZXaTXDMk=";
   };
 
   nativeBuildInputs = [
