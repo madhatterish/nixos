@@ -15,7 +15,7 @@ Add to your NixOS configuration (e.g., `hosts/work-laptop/configuration.nix`):
   ];
 
   # NetExtender needs PPP for VPN functionality
-  programs.ppp.enable = true;
+  services.pppd.enable = true;
 
   # Optional: Allow your user to run netextender with sudo without password
   security.sudo.extraRules = [{

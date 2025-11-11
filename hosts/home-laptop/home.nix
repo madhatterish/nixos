@@ -55,9 +55,7 @@
   # SSH configuration
   programs.ssh = {
     enable = true;
-
-    # Add SSH keys to agent automatically
-    addKeysToAgent = "yes";
+    enableDefaultConfig = true;
 
     # SSH client configuration
     extraConfig = ''
@@ -70,6 +68,11 @@
 
     # Host-specific configurations
     matchBlocks = {
+      # Default settings for all hosts
+      "*" = {
+        addKeysToAgent = "yes";
+      };
+
       # Infrastructure servers (use infrastructure key)
       "*.prod *.staging" = {
         user = "admin";

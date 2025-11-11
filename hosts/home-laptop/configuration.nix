@@ -42,7 +42,7 @@
   ];
 
   # Enable PPP for NetExtender VPN
-  programs.ppp.enable = true;
+  services.pppd.enable = true;
 
   # Allow NetExtender to run with sudo without password
   security.sudo.extraRules = [{
