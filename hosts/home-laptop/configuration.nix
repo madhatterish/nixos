@@ -16,11 +16,14 @@
   # Hostname
   networking.hostName = "home-laptop";
 
+  # Create pppusers group for VPN access
+  users.groups.pppusers = {};
+
   # Users
   users.users.unaware = {
     isNormalUser = true;
     description = "unaware";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "pppusers" ];
     initialPassword = "changeme";
   };
 
@@ -43,6 +46,21 @@
 
   # Enable PPP for NetExtender VPN
   services.pppd.enable = true;
+
+  # Configure pppd to allow group access
+  systemd.tmpfiles.rules = [
+    "d /etc/ppp 0755 root root -"
+    "d /etc/ppp/peers 0750 root pppusers -"
+  ];
+
+  # Make pppd accessible to pppusers group
+  security.wrappers.pppd = {
+    source = "${pkgs.ppp}/bin/pppd";
+    capabilities = "cap_net_admin+ep";
+    owner = "root";
+    group = "pppusers";
+    permissions = "u+rx,g+rx";
+  };
 
   # Allow NetExtender to run with sudo without password
   security.sudo.extraRules = [{
