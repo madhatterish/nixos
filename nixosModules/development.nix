@@ -2,7 +2,7 @@
 
 let
   # Custom Cursor with enhanced FHS environment for extension marketplace
-  cursor-fhs-custom = pkgs.cursor.fhs.override {
+  cursor-fhs-custom = pkgs.code-cursor.fhs.override {
     # Add additional libraries needed for extensions and marketplace
     extraPkgs = pkgs: with pkgs; [
       # SSL certificates for marketplace
