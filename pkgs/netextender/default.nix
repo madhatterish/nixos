@@ -90,10 +90,15 @@ stdenv.mkDerivation rec {
       --prefix LD_LIBRARY_PATH : $out/lib \
       --set NETEXTENDER_DATADIR $out/share/netextender
 
-    # Fix desktop file paths
-    substituteInPlace $out/share/applications/netextender.desktop \
-      --replace-fail "/usr/bin/netExtenderGui" "$out/bin/netextender-gui" \
-      --replace-fail "/usr/share/icons" "$out/share/icons"
+    # Fix desktop file paths if they exist in the file
+    if grep -q "/usr/bin/netExtenderGui" $out/share/applications/netextender.desktop; then
+      substituteInPlace $out/share/applications/netextender.desktop \
+        --replace-fail "/usr/bin/netExtenderGui" "$out/bin/netextender-gui"
+    fi
+    if grep -q "/usr/share/icons" $out/share/applications/netextender.desktop; then
+      substituteInPlace $out/share/applications/netextender.desktop \
+        --replace-fail "/usr/share/icons" "$out/share/icons"
+    fi
 
     runHook postInstall
   '';
