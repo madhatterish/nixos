@@ -196,6 +196,11 @@
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.sddm.enableGnomeKeyring = true;
 
+  # Ensure keyring environment variables are available
+  environment.sessionVariables = {
+    XDG_RUNTIME_DIR = "/run/user/$UID";
+  };
+
   # Backlight control permissions
   programs.light.enable = true;
 

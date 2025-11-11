@@ -9,6 +9,13 @@
   # compatible with. Don't change this!
   home.stateVersion = "24.11";
 
+  # Session variables for proper keyring integration
+  home.sessionVariables = {
+    # Ensure GNOME Keyring is used for secrets
+    GNOME_KEYRING_CONTROL = "/run/user/1000/keyring";
+    SSH_AUTH_SOCK = "/run/user/1000/keyring/ssh";
+  };
+
   # User-specific packages
   home.packages = with pkgs; [
     # CLI utilities
@@ -157,6 +164,29 @@
 
   # Ansible inventory - symlink from repo to ~/ansible/inventory.yml
   home.file."ansible/inventory.yml".source = ../../ansible/inventory.yml;
+
+  # Custom desktop entries for fuzzel launcher
+  xdg.dataFile."applications/ssh-launcher.desktop".text = ''
+    [Desktop Entry]
+    Name=SSH Launcher
+    Comment=Connect to SSH hosts
+    Exec=kitty -e ssh-launcher
+    Icon=utilities-terminal
+    Type=Application
+    Categories=Network;
+    Terminal=false
+  '';
+
+  xdg.dataFile."applications/k8s-context.desktop".text = ''
+    [Desktop Entry]
+    Name=Kubernetes Context
+    Comment=Switch Kubernetes contexts
+    Exec=kitty -e k8s-context-switcher
+    Icon=kubernetes
+    Type=Application
+    Categories=Network;Development;
+    Terminal=false
+  '';
 
   # XDG user directories (Downloads, Documents, etc.)
   # Force overwrite of existing user-dirs.dirs file
