@@ -63,14 +63,12 @@
     "L+ /sbin/lsmod - - - - ${pkgs.kmod}/bin/lsmod"
   ];
 
-  # Make pppd setuid so it can be run by pppusers group
+  # Make pppd setuid so it can be run by users
   security.wrappers.pppd = {
     source = "${pkgs.ppp}/bin/pppd";
-    capabilities = "cap_net_admin+ep";
     owner = "root";
-    group = "pppusers";
+    group = "root";
     setuid = true;
-    setgid = false;
   };
 
   # Allow NetExtender to run with sudo without password
