@@ -49,12 +49,15 @@
   # Enable PPP for NetExtender VPN
   services.pppd.enable = true;
 
-  # Configure pppd to allow group access
+  # Configure pppd to allow group access and symlinks for NetExtender
   systemd.tmpfiles.rules = [
     "d /etc/ppp 0755 root root -"
     "d /etc/ppp/peers 0750 root pppusers -"
     "d /usr/sbin 0755 root root -"
+    "d /sbin 0755 root root -"
     "L+ /usr/sbin/pppd - - - - /run/wrappers/bin/pppd"
+    "L+ /sbin/ip - - - - ${pkgs.iproute2}/bin/ip"
+    "L+ /sbin/lsmod - - - - ${pkgs.kmod}/bin/lsmod"
   ];
 
   # Make pppd accessible to pppusers group
