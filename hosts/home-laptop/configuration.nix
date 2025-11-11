@@ -51,6 +51,8 @@
   systemd.tmpfiles.rules = [
     "d /etc/ppp 0755 root root -"
     "d /etc/ppp/peers 0750 root pppusers -"
+    "d /usr/sbin 0755 root root -"
+    "L+ /usr/sbin/pppd - - - - /run/wrappers/bin/pppd"
   ];
 
   # Make pppd accessible to pppusers group
