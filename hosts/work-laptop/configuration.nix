@@ -49,8 +49,11 @@
   # Enable PPP for NetExtender VPN
   services.pppd.enable = true;
 
-  # Load PPP kernel modules
-  boot.kernelModules = [ "ppp_generic" "ppp_async" "ppp_deflate" "ppp_mppe" ];
+  # Load PPP and WireGuard kernel modules
+  boot.kernelModules = [ "ppp_generic" "ppp_async" "ppp_deflate" "ppp_mppe" "wireguard" ];
+
+  # Enable WireGuard
+  networking.wireguard.enable = true;
 
   # Configure pppd to allow group access and symlinks for NetExtender
   systemd.tmpfiles.rules = [
