@@ -28,7 +28,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = { inherit inputs; };
-            home-manager.users.youruser = import ./hosts/work-laptop/home.nix;
+            home-manager.users.sgasparis = import ./hosts/work-laptop/home.nix;
           }
         ];
       };
@@ -44,7 +44,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = { inherit inputs; };
-            home-manager.users.unaware = import ./hosts/home-laptop/home.nix;
+            home-manager.users.unknown = import ./hosts/home-laptop/home.nix;
           }
         ];
       };
