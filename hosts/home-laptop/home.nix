@@ -5,12 +5,12 @@
     inputs.noctalia.homeModules.default
   ];
   # Home Manager needs a bit of information about you and the paths it should manage
-  home.username = "unaware";
-  home.homeDirectory = "/home/unaware";
+  home.username = "unknown";
+  home.homeDirectory = "/home/unknown";
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. Don't change this!
-  home.stateVersion = "24.11";
+  home.stateVersion = "25.11";
 
   # Session variables for proper keyring integration
   home.sessionVariables = {
@@ -38,8 +38,8 @@
   programs.git = {
     enable = true;
     settings = {
-      user.name = "Your Name";
-      user.email = "personal@example.com";
+      user.name = "Steven Gasparis";
+      user.email = "gasparis.steven@gmail.com";
       init.defaultBranch = "main";
       pull.rebase = true;
     };
