@@ -8,6 +8,15 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+  # Bluetooth Dependency for Noctalia
+  hardware.bluetooth.enable = true;
+
+  # Power Profile Dependency for Noctalia
+  services.tuned.enable = true;
+
+  # UPower Dependency for Noctalia
+  services.upower.enable = true;
+
   # Set your time zone
   time.timeZone = "America/New_York";
 
