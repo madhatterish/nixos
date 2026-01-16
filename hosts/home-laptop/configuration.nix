@@ -20,9 +20,9 @@
   users.groups.pppusers = {};
 
   # Users
-  users.users.unaware = {
+  users.users.unknown = {
     isNormalUser = true;
-    description = "unaware";
+    description = "unknown";
     extraGroups = [ "networkmanager" "wheel" "docker" "pppusers" ];
     initialPassword = "changeme";
   };
@@ -74,7 +74,7 @@
 
   # Allow NetExtender to run with sudo without password
   security.sudo.extraRules = [{
-    users = [ "unaware" ];
+    users = [ "unknown" ];
     commands = [{
       command = "${pkgs.callPackage ../../pkgs/netextender {}}/bin/netextender";
       options = [ "NOPASSWD" ];

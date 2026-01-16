@@ -83,7 +83,7 @@
 
     # Background image with blur
     # You can set this to your wallpaper path
-    background=/home/unaware/Pictures/Wallpapers/arc.png
+    background=~/Pictures/Wallpapers/arc.png
     type=image
 
     # Enable blur effect
