@@ -1,6 +1,9 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
+  imports = [
+    inputs.noctalia.homeModules.default
+  ];
   # Home Manager needs a bit of information about you and the paths it should manage
   home.username = "unaware";
   home.homeDirectory = "/home/unaware";
@@ -107,18 +110,16 @@
     enable = true;
   };
 
-  # Niri configuration
-  # Link the KDL config file directly - Niri will use this automatically
-  xdg.configFile."niri/config.kdl".source = ../../shared/niri.kdl;
-
-  # Waybar configuration
-  # Machine-specific config with home/gaming shortcuts (Discord, Spotify)
-  # Shared style from ../../shared/waybar/style.css
-  xdg.configFile."waybar/config".source = ./waybar-config.json;
-  xdg.configFile."waybar/style.css".source = ../../shared/waybar/style.css;
-
-  programs.waybar = {
+  # Hyprland configuration
+  wayland.windowManager.hyprland = {
     enable = true;
+    extraConfig = builtins.readFile ../../shared/hyprland.conf;
+  };
+
+  # Noctalia shell configuration (panel, notifications, lock screen)
+  programs.noctalia-shell = {
+    enable = true;
+    systemd.enable = true;
   };
 
   # Kitty terminal configuration
@@ -159,8 +160,7 @@
     };
   };
 
-  # Swaylock configuration
-  xdg.configFile."swaylock/config".source = ../../shared/swaylock.conf;
+  # Lock screen is now handled by Noctalia
 
   # Tmux configuration
   xdg.configFile."tmux/tmux.conf".source = ../../shared/tmux.conf;

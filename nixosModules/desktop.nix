@@ -7,22 +7,23 @@
     NIXOS_OZONE_WL = "1";
   };
 
-  # Enable Niri
-  programs.niri = {
+  # Enable Hyprland
+  programs.hyprland = {
     enable = true;
+    xwayland.enable = true;
   };
 
   # XDG portal for screen sharing and other desktop integrations
   xdg.portal = {
     enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-gnome ];
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-hyprland ];
     config = {
       common = {
         default = [ "gtk" ];
         "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
       };
-      niri = {
-        default = [ "gtk" ];
+      hyprland = {
+        default = [ "hyprland" "gtk" ];
         "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
       };
     };
@@ -70,8 +71,8 @@
     };
   };
 
-  # Set Niri as default session
-  services.displayManager.defaultSession = "niri";
+  # Set Hyprland as default session
+  services.displayManager.defaultSession = "hyprland";
 
   # Create custom SDDM theme configuration for blurred background
   environment.etc."sddm.conf.d/theme.conf".text = ''
@@ -125,21 +126,22 @@
     # Application launcher
     fuzzel
 
-    # Notifications
-    dunst
+    # Notifications - handled by Noctalia
     libnotify  # Provides notify-send command
 
     # Wallpaper
-    swaybg    # Niri compatible wallpaper tool
+    swaybg    # Hyprland compatible wallpaper tool
     waypaper  # GUI wallpaper manager for Wayland (works with swaybg)
 
-    # Status bar
-    waybar
+    # Status bar and lock screen handled by Noctalia
 
-    # Screen lock
-    swaylock-effects  # Enhanced swaylock with blur and effects
+    # Idle management
     swayidle          # Idle management daemon
-    grim              # Screenshot tool (required for swaylock-effects screenshots)
+
+    # Screenshot tools
+    grim              # Screenshot tool
+    slurp             # Region selection for screenshots
+    jq                # JSON processing for screenshot window info
 
     # Network management GUI
     networkmanagerapplet
@@ -225,15 +227,15 @@
     description = "Idle manager for Wayland";
     wantedBy = [ "graphical-session.target" ];
     partOf = [ "graphical-session.target" ];
-    path = [ pkgs.bash ];
+    path = [ pkgs.bash pkgs.hyprland ];
     serviceConfig = {
       Type = "simple";
       ExecStart = ''
         ${pkgs.swayidle}/bin/swayidle -w \
-          timeout 600 'bash ~/nixos/shared/scripts/lock-screen.sh' \
-          timeout 900 'niri msg action power-off-monitors' \
-          resume 'niri msg action power-on-monitors' \
-          before-sleep 'bash ~/nixos/shared/scripts/lock-screen.sh'
+          timeout 600 'noctalia-lock' \
+          timeout 900 'hyprctl dispatch dpms off' \
+          resume 'hyprctl dispatch dpms on' \
+          before-sleep 'noctalia-lock'
       '';
       Restart = "on-failure";
       RestartSec = 3;

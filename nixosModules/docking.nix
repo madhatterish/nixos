@@ -109,7 +109,7 @@
     description = "Configure displays when dock is connected";
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = "${pkgs.bash}/bin/bash -c 'sleep 2 && niri msg action power-on-monitors'";
+      ExecStart = "${pkgs.bash}/bin/bash -c 'sleep 2 && hyprctl dispatch dpms on'";
     };
   };
 }
