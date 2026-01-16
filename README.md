@@ -5,7 +5,7 @@ This repository contains my declarative NixOS configurations for multiple machin
 ## Repository Structure
 
 ```
-nixos-config/
+nixos/
 ├── flake.nix                    # Main flake configuration
 ├── flake.lock                   # Lock file (auto-generated)
 ├── .gitignore                   # Excludes hardware configs
@@ -67,8 +67,8 @@ Follow the official [NixOS installation guide](https://nixos.org/manual/nixos/st
 
 ```bash
 cd ~
-git clone <your-repo-url> nixos-config
-cd nixos-config
+git clone <your-repo-url>
+cd nixos
 ```
 
 ### 3. Copy Hardware Configuration
@@ -77,10 +77,10 @@ After installation, copy your hardware configuration to the appropriate host dir
 
 ```bash
 # For work laptop
-sudo cp /etc/nixos/hardware-configuration.nix ~/nixos-config/hosts/work-laptop/
+sudo cp /etc/nixos/hardware-configuration.nix ~/nixos/hosts/work-laptop/
 
 # For home laptop
-sudo cp /etc/nixos/hardware-configuration.nix ~/nixos-config/hosts/home-laptop/
+sudo cp /etc/nixos/hardware-configuration.nix ~/nixos/hosts/home-laptop/
 ```
 
 **Important:** Hardware configurations are machine-specific and should NOT be committed to git.
@@ -112,10 +112,10 @@ Edit the appropriate files for your laptop:
 
 ```bash
 # For work laptop
-sudo nixos-rebuild switch --flake ~/nixos-config#work-laptop
+sudo nixos-rebuild switch --flake ~/nixos#work-laptop
 
 # For home laptop
-sudo nixos-rebuild switch --flake ~/nixos-config#home-laptop
+sudo nixos-rebuild switch --flake ~/nixos#home-laptop
 ```
 
 ### 6. Reboot
@@ -244,7 +244,7 @@ Hyprland
 
 ```bash
 # Rebuild just home manager
-home-manager switch --flake ~/nixos-config#youruser@work-laptop
+home-manager switch --flake ~/nixos#youruser@work-laptop
 ```
 
 ## Git Workflow
@@ -252,7 +252,7 @@ home-manager switch --flake ~/nixos-config#youruser@work-laptop
 ### Initial Commit
 
 ```bash
-cd ~/nixos-config
+cd ~/nixos
 git add .
 git commit -m "Initial NixOS configuration"
 git remote add origin <your-repo-url>
@@ -271,7 +271,7 @@ git push
 ### On Another Machine
 
 ```bash
-cd ~/nixos-config
+cd ~/nixos
 git pull
 sudo nixos-rebuild switch --flake .#<hostname>
 ```

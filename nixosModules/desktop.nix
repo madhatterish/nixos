@@ -109,7 +109,7 @@
     # Wayland utilities
     wl-clipboard
     wlr-randr
-
+ 
     # Terminal
     kitty
 
@@ -181,13 +181,6 @@
     pulse.enable = true;
     jack.enable = true;
   };
-
-  # Network management (required for Waybar network module)
-  networking.networkmanager.enable = true;
-
-  # Bluetooth
-  hardware.bluetooth.enable = true;
-  services.blueman.enable = true;
 
   # Enable dconf (required for some GTK apps)
   programs.dconf.enable = true;

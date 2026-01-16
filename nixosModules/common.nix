@@ -10,6 +10,7 @@
 
   # Bluetooth Dependency for Noctalia
   hardware.bluetooth.enable = true;
+  services.blueman.enable = true;
 
   # Power Profile Dependency for Noctalia
   services.tuned.enable = true;
